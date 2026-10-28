@@ -1,0 +1,380 @@
+/**
+ * COLONY KERNEL: MARS - 10 Mini-Games CSS Overlay Styles
+ */
+
+#minigame-modal .modal-content {
+    max-width: 600px;
+    background: rgba(10, 16, 30, 0.96);
+    border: 1px solid var(--cyan-neon);
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
+    text-align: center;
+}
+
+.minigame-instructions {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+/* Pipe Puzzle */
+.pipe-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.pipe-endpoints {
+    display: flex;
+    justify-content: space-between;
+    width: 270px;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.pipe-inlet { color: #00f0ff; }
+.pipe-outlet { color: #00ff88; }
+
+.pipe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 84px);
+    gap: 8px;
+    justify-content: center;
+    margin: 10px auto;
+}
+
+.pipe-tile {
+    width: 84px;
+    height: 84px;
+    background: rgba(15, 23, 42, 0.95);
+    border: 2px solid rgba(0, 240, 255, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.pipe-tile:hover {
+    border-color: var(--cyan-neon);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+}
+
+.pipe-tile.flow-active .pipe-core {
+    background: #00f0ff !important;
+    box-shadow: 0 0 16px #00f0ff, 0 0 24px #00ffff !important;
+}
+
+.pipe-segment {
+    position: absolute;
+    background: #1e3a5f;
+    transition: background 0.2s ease;
+}
+
+.pipe-seg-v { width: 18px; height: 100%; left: 33px; top: 0; }
+.pipe-seg-h { width: 100%; height: 18px; left: 0; top: 33px; }
+.pipe-seg-center { width: 22px; height: 22px; left: 31px; top: 31px; border-radius: 4px; }
+.pipe-core {
+    position: absolute;
+    background: #0ea5e9;
+    box-shadow: 0 0 8px #0ea5e9;
+}
+
+/* Wire Game */
+.wire-game-container {
+    position: relative;
+    width: 480px;
+    height: 260px;
+    margin: 0 auto;
+    background: rgba(10, 16, 28, 0.85);
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#wire-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.wire-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    z-index: 2;
+}
+
+.wire-node {
+    padding: 10px 18px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    user-select: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.wire-node:hover {
+    transform: scale(1.06);
+}
+
+.wire-node.selected {
+    border-color: #fff;
+    box-shadow: 0 0 16px #fff, 0 0 24px var(--cyan-neon);
+    transform: scale(1.1);
+}
+
+.wire-node.connected {
+    opacity: 0.9;
+    cursor: default;
+}
+
+/* Cargo Sort Game */
+.cargo-conveyor-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 10px;
+}
+
+.cargo-crate-card {
+    background: rgba(18, 28, 51, 0.9);
+    border: 2px solid var(--amber-neon);
+    border-radius: 10px;
+    padding: 20px 24px;
+    width: 380px;
+    text-align: center;
+    box-shadow: 0 0 24px rgba(245, 158, 11, 0.25);
+    animation: crate-slide-in 0.3s ease-out;
+}
+
+@keyframes crate-slide-in {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.crate-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.crate-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.cargo-bins-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.btn-cargo-bin {
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s ease;
+}
+
+.bin-high { background: rgba(239, 68, 68, 0.25); border: 2px solid #ef4444; color: #ef4444; }
+.bin-med { background: rgba(245, 158, 11, 0.25); border: 2px solid #f59e0b; color: #f59e0b; }
+.bin-low { background: rgba(59, 130, 246, 0.25); border: 2px solid #3b82f6; color: #3b82f6; }
+
+.btn-cargo-bin:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 14px currentColor;
+}
+
+/* Hydroponics Plant Preview */
+.hydro-sim-box {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+#hydro-canvas {
+    background: rgba(10, 20, 15, 0.8);
+    border: 1px solid #10b981;
+    border-radius: 8px;
+}
+
+/* Drone Simulation */
+.drone-flight-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+#drone-canvas {
+    background: #090f1d;
+    border: 1px solid var(--cyan-neon);
+    border-radius: 8px;
+}
+
+.flight-telemetry {
+    display: flex;
+    justify-content: space-between;
+    width: 380px;
+    font-size: 0.82rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+}
+
+/* Meteor Defense Arcade */
+.meteor-arcade-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#meteor-canvas {
+    background: #060913;
+    border: 1px solid #a855f7;
+    border-radius: 8px;
+}
+
+/* Oscilloscope */
+.wave-match-meter {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-top: 8px;
+}
+
+/* Solar Alignment */
+.slider-puzzle-box {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 10px;
+}
+
+.solar-gauge {
+    height: 14px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.gauge-fill {
+    height: 100%;
+    transition: width 0.2s ease, background 0.3s ease;
+}
+
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+}
+
+.slider-group label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.slider-group input[type=range] {
+    width: 100%;
+    accent-color: var(--cyan-neon);
+}
+
+/* RAM Memory Matrix */
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 120px);
+    gap: 12px;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.mem-tile {
+    height: 90px;
+    background: rgba(18, 28, 51, 0.9);
+    border: 2px solid rgba(0, 240, 255, 0.3);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.mem-tile.flash {
+    background: var(--cyan-neon);
+    color: #000;
+    box-shadow: 0 0 25px var(--cyan-neon);
+    transform: scale(1.05);
+}
+
+.status-msg {
+    font-weight: 800;
+    color: var(--amber-neon);
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+/* Wire Game */
+.wire-game-box {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.wire-column {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.wire-node {
+    padding: 10px 18px;
+    border-radius: 6px;
+    color: #000;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Rover Simulation Canvas */
+.rover-sim-box canvas {
+    border-radius: 8px;
+    border: 1px solid var(--cyan-neon);
+    margin-bottom: 12px;
+}
+
+.rover-controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+/* Action Bar */
+.mg-action-bar {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}

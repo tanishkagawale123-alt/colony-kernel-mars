@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>COLONY KERNEL: MARS — Ultimate 3D Game Edition</title>
+    <meta name="description" content="You don't control the colony. You ARE the operating system. A 3D third-person Mars exploration and OS simulation game.">
+
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/hud.css">
+    <link rel="stylesheet" href="css/kernel_os.css">
+    <link rel="stylesheet" href="css/dialogue.css">
+    <link rel="stylesheet" href="css/minigames.css">
+    <link rel="stylesheet" href="css/postmortem.css">
+</head>
+<body>
+    <!-- 3D WebGL Canvas Viewport -->
+    <div id="game-canvas-container"></div>
+
+    <!-- 1. Exploration HUD Overlay -->
+    <div id="game-hud">
+        <!-- Top Status Bar -->
+        <div class="hud-top-bar">
+            <!-- Colony Resources Cluster -->
+            <div class="hud-resource-cluster">
+                <div class="resource-pill">
+                    <div class="pill-label"><span>OXYGEN</span><span id="hud-o2-val">92%</span></div>
+                    <div class="pill-bar"><div id="hud-o2-fill" class="pill-fill fill-o2" style="width: 92%"></div></div>
+                </div>
+                <div class="resource-pill">
+                    <div class="pill-label"><span>POWER</span><span id="hud-power-val">85%</span></div>
+                    <div class="pill-bar"><div id="hud-power-fill" class="pill-fill fill-power" style="width: 85%"></div></div>
+                </div>
+                <div class="resource-pill">
+                    <div class="pill-label"><span>INTEGRITY</span><span id="hud-integrity-val">100%</span></div>
+                    <div class="pill-bar"><div id="hud-integrity-fill" class="pill-fill fill-integrity" style="width: 100%"></div></div>
+                </div>
+                <div class="resource-pill">
+                    <div class="pill-label"><span>HAPPINESS</span><span id="hud-happiness-val">75%</span></div>
+                    <div class="pill-bar"><div id="hud-happiness-fill" class="pill-fill fill-happiness" style="width: 75%"></div></div>
+                </div>
+            </div>
+
+            <!-- Sol & Player Badges -->
+            <div class="hud-sol-widget">
+                <span id="hud-sol-val" class="sol-badge">SOL 01</span>
+                <span id="hud-level-val" class="lvl-badge">LVL 1</span>
+                <span id="hud-credits-val" class="credits-badge">100 ¢</span>
+            </div>
+
+            <!-- HUD Quick Action Buttons -->
+            <div class="hud-btn-group">
+                <button id="hud-btn-kernel" class="hud-btn hud-btn-primary">[TAB] KERNEL OS</button>
+                <button id="hud-btn-rover" class="hud-btn" onclick="if(window.game) window.game.toggleRoverMode()">🚀 ROVER [R]</button>
+                <button id="hud-btn-achievements" class="hud-btn" onclick="if(window.game) window.game.openAchievements()">🏆 AWARDS</button>
+                <button id="hud-btn-customize" class="hud-btn">🎨 SUIT</button>
+                <button id="hud-btn-mute" class="hud-btn">🔊</button>
+                <button id="hud-btn-settings" class="hud-btn">⚙️</button>
+            </div>
+        </div>
+
+        <!-- Objective Tracker Panel -->
+        <div class="hud-objective-panel glass-panel">
+            <div class="objective-title">ACTIVE DIRECTIVE</div>
+            <div id="hud-objective-text" class="objective-body">
+                <strong>MISSION 01: FIRST BOOT</strong><br>
+                Explore the Martian base, meet Pixel and Maya [E], and dispatch your first process to Core 01 [TAB].
+            </div>
+        </div>
+
+        <!-- Holographic Colony Mini-Map / Radar -->
+        <div class="hud-radar-cluster">
+            <div class="radar-header">
+                <span>🛰️ RADAR // MARS</span>
+                <span id="radar-distance-val">0m</span>
+            </div>
+            <div class="radar-viewport">
+                <canvas id="hud-radar-canvas" width="160" height="160"></canvas>
+            </div>
+            <div id="radar-target-label" class="radar-target-info">TARGET: MAYA (SPIRE)</div>
+        </div>
+
+        <!-- Center Bottom Context Interaction Prompt -->
+        <div id="hud-interact-prompt" class="hidden">Press [E] to Interact</div>
+
+        <!-- Kernel AI Hologram Assistant Popup -->
+        <div id="kernel-ai-dialogue" class="hidden">
+            <div class="kernel-avatar" data-mood="happy">💠</div>
+            <div class="kernel-content">
+                <div class="kernel-header">KERNEL AI // OS v2.4</div>
+                <div class="kernel-text">Colony Kernel online. All systems nominal.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Kernel Holographic Operating System Modal (TAB) -->
+    <div id="kernel-os-modal" class="game-modal hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2>⚡ KERNEL OS // 4-CORE PROCESS SCHEDULER</h2>
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <button class="btn-os" onclick="window.game.scheduler.autoDispatch()">⚡ AUTO-DISPATCH (FIFO)</button>
+                    <button class="btn-os" onclick="window.game.scheduler.spawnCustomProcess()">+ SPAWN TASK</button>
+                    <button class="btn-os btn-preempt" onclick="window.game.scheduler.injectDeadlockTest()">⚠️ DEADLOCK LAB</button>
+                    <button class="modal-close" onclick="window.game.toggleKernelMode()">✕</button>
+                </div>
+            </div>
+
+            <div class="kernel-layout">
+                <!-- 4 CPU Cores -->
+                <div id="kernel-cpu-cores"></div>
+
+                <!-- Deadlock Alert / Status Banner -->
+                <div id="kernel-deadlock-status"></div>
+
+                <!-- Process Queue Table -->
+                <div class="process-table-container">
+                    <table class="process-table">
+                        <thead>
+                            <tr>
+                                <th>PID</th>
+                                <th>PROCESS NAME</th>
+                                <th>CATEGORY</th>
+                                <th>PRIORITY</th>
+                                <th>BURST PROGRESS</th>
+                                <th>STATE</th>
+                                <th>ACTION / DISPATCH</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kernel-process-table-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- System Terminal Logs -->
+                <div>
+                    <h4 style="font-size: 0.8rem; color: var(--cyan-neon); margin-bottom: 6px; font-family: 'Space Grotesk', sans-serif;">KERNEL SYSTEM LOGS</h4>
+                    <div id="kernel-log-content" class="kernel-log-terminal"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. NPC Dialogue Modal -->
+    <div id="dialogue-modal" class="game-modal hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2>COMMUNICATION LINK</h2>
+                <button class="modal-close" onclick="window.game.closeDialogue()">✕</button>
+            </div>
+
+            <div class="dialogue-npc-profile">
+                <div class="dialogue-avatar">🧑‍🚀</div>
+                <div class="npc-meta">
+                    <h3 id="dialogue-npc-name">Maya</h3>
+                    <p id="dialogue-npc-role">Lead Systems Engineer</p>
+                </div>
+            </div>
+
+            <div class="friendship-widget">
+                <div id="dialogue-friend-tier" class="friend-tier-text">RELATIONSHIP: STRANGER</div>
+                <div class="friend-bar"><div id="dialogue-friend-fill" class="friend-fill" style="width: 0%"></div></div>
+            </div>
+
+            <div id="dialogue-npc-text" class="dialogue-speech-bubble">
+                Welcome to the central spire. Please tell me you didn't schedule cargo sorting before oxygen again.
+            </div>
+
+            <div id="dialogue-topics" class="dialogue-topics-list"></div>
+        </div>
+    </div>
+
+    <!-- 4. Mini-Games Modal -->
+    <div id="minigame-modal" class="game-modal hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2 id="minigame-title">COLONY ACTIVITY</h2>
+                <button class="modal-close" onclick="window.game.miniGames.close()">✕</button>
+            </div>
+            <p id="minigame-desc" class="minigame-instructions"></p>
+            <div id="minigame-custom-container"></div>
+        </div>
+    </div>
+
+    <!-- 5. Character Customizer Modal -->
+    <div id="customizer-modal" class="game-modal hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2>🎨 ASTRONAUT SUIT CUSTOMIZER</h2>
+                <button class="modal-close" onclick="document.getElementById('customizer-modal').classList.add('hidden'); window.inputController.isUIActive=false;">✕</button>
+            </div>
+            <div class="customizer-grid">
+                <div class="customizer-row">
+                    <label>Suit Base Plating:</label>
+                    <div class="color-swatches">
+                        <div class="swatch" style="background: #e2e8f0" onclick="window.game.player.applyCustomization({suitColor: 0xe2e8f0})"></div>
+                        <div class="swatch" style="background: #0f172a" onclick="window.game.player.applyCustomization({suitColor: 0x0f172a})"></div>
+                        <div class="swatch" style="background: #ea580c" onclick="window.game.player.applyCustomization({suitColor: 0xea580c})"></div>
+                        <div class="swatch" style="background: #1e3a8a" onclick="window.game.player.applyCustomization({suitColor: 0x1e3a8a})"></div>
+                    </div>
+                </div>
+                <div class="customizer-row">
+                    <label>Neon Accents & Antennas:</label>
+                    <div class="color-swatches">
+                        <div class="swatch" style="background: #00f0ff" onclick="window.game.player.applyCustomization({accentColor: 0x00f0ff})"></div>
+                        <div class="swatch" style="background: #ff0077" onclick="window.game.player.applyCustomization({accentColor: 0xff0077})"></div>
+                        <div class="swatch" style="background: #00ff88" onclick="window.game.player.applyCustomization({accentColor: 0x00ff88})"></div>
+                        <div class="swatch" style="background: #f59e0b" onclick="window.game.player.applyCustomization({accentColor: 0xf59e0b})"></div>
+                    </div>
+                </div>
+                <div class="customizer-row">
+                    <label>Helmet Visor Coating:</label>
+                    <div class="color-swatches">
+                        <div class="swatch" style="background: #102a43" onclick="window.game.player.applyCustomization({visorColor: 0x102a43})"></div>
+                        <div class="swatch" style="background: #ffd700" onclick="window.game.player.applyCustomization({visorColor: 0xffd700})"></div>
+                        <div class="swatch" style="background: #00ffff" onclick="window.game.player.applyCustomization({visorColor: 0x00ffff})"></div>
+                        <div class="swatch" style="background: #ff0055" onclick="window.game.player.applyCustomization({visorColor: 0xff0055})"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Postmortem / Victory / Failure Timeline Modal -->
+    <div id="postmortem-modal" class="game-modal hidden">
+        <div class="modal-content glass-panel">
+            <h2 id="postmortem-title" class="postmortem-header">MISSION SUMMARY</h2>
+            <div id="postmortem-summary"></div>
+            <div id="postmortem-timeline" class="postmortem-timeline-box"></div>
+            <button class="btn-os" onclick="location.reload()" style="margin-top: 16px;">REBOOT KERNEL & PLAY AGAIN</button>
+        </div>
+    </div>
+
+    <!-- 7. Settings Modal -->
+    <div id="settings-modal" class="game-modal hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2>⚙️ SYSTEM SETTINGS</h2>
+                <button class="modal-close" onclick="document.getElementById('settings-modal').classList.add('hidden'); window.inputController.isUIActive=false;">✕</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div class="slider-group">
+                    <label>Master Audio Volume</label>
+                    <input type="range" min="0" max="100" value="70" oninput="if(window.soundEngine) window.soundEngine.setVolume(this.value/100)">
+                </div>
+                <div class="slider-group">
+                    <label>Mouse Look Sensitivity</label>
+                    <input type="range" min="1" max="10" value="3" oninput="if(window.game) window.game.cameraController.sensitivity = this.value * 0.001">
+                </div>
+                <button class="btn-os" onclick="document.getElementById('settings-modal').classList.add('hidden'); window.inputController.isUIActive=false;">SAVE & RETURN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. Achievements & Badges Modal -->
+    <div id="achievements-modal" class="game-modal hidden">
+        <div class="modal-content glass-panel" style="max-width: 680px;">
+            <div class="modal-header">
+                <h2>🏆 COLONY AWARDS & ACHIEVEMENTS</h2>
+                <button class="modal-close" onclick="window.game.closeAchievements()">✕</button>
+            </div>
+            <div id="achievements-list-container" class="achievements-grid"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+
+    <!-- JavaScript Game Engine Modules -->
+    <script src="js/vendor/three.min.js"></script>
+    <script src="js/audio/sound_engine.js"></script>
+    <script src="js/engine/input.js"></script>
+    <script src="js/engine/camera.js"></script>
+    <script src="js/engine/particles.js"></script>
+    <script src="js/world/mars_terrain.js"></script>
+    <script src="js/world/colony_buildings.js"></script>
+    <script src="js/world/lighting_cycle.js"></script>
+    <script src="js/characters/character_rig.js"></script>
+    <script src="js/characters/player.js"></script>
+    <script src="js/characters/npcs.js"></script>
+    <script src="js/characters/pixel_companion.js"></script>
+    <script src="js/characters/kernel_ai.js"></script>
+    <script src="js/os_kernel/process.js"></script>
+    <script src="js/os_kernel/deadlock_detector.js"></script>
+    <script src="js/os_kernel/cascade_engine.js"></script>
+    <script src="js/os_kernel/scheduler.js"></script>
+    <script src="js/os_kernel/kernel_ui.js"></script>
+    <script src="js/minigames/minigames.js"></script>
+    <script src="js/story/dialogues.js"></script>
+    <script src="js/story/missions.js"></script>
+    <script src="js/story/achievements.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

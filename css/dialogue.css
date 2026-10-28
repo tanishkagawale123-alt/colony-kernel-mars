@@ -1,0 +1,115 @@
+/**
+ * COLONY KERNEL: MARS - NPC Dialogue & Friendship Stylesheet
+ */
+
+#dialogue-modal .modal-content {
+    max-width: 650px;
+    background: rgba(13, 20, 36, 0.95);
+    border: 1px solid var(--purple-neon);
+    box-shadow: 0 0 35px rgba(168, 85, 247, 0.3);
+}
+
+.dialogue-npc-profile {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.dialogue-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    background: radial-gradient(circle, #a855f7 0%, #1e1b4b 80%);
+    border: 2px solid var(--purple-neon);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
+}
+
+.npc-meta h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--purple-neon);
+    font-size: 1.25rem;
+}
+
+.npc-meta p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Friendship Meter */
+.friendship-widget {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 16px;
+}
+
+.friend-tier-text {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--purple-neon);
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+}
+
+.friend-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.friend-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #a855f7, #ec4899);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+/* Dialogue Speech Bubble */
+.dialogue-speech-bubble {
+    background: rgba(18, 28, 51, 0.8);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    color: #fff;
+    min-height: 70px;
+}
+
+/* Topics Buttons */
+.dialogue-topics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dialogue-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: #f1f5f9;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-align: left;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dialogue-btn:hover {
+    background: rgba(168, 85, 247, 0.25);
+    border-color: var(--purple-neon);
+    transform: translateX(4px);
+}
+
+.dialogue-btn.btn-exit {
+    border-color: rgba(255, 255, 255, 0.15);
+    color: var(--text-muted);
+}

@@ -1,0 +1,265 @@
+/**
+ * COLONY KERNEL: MARS - Kernel Holographic OS Console CSS
+ * Futuristic operating system dashboard with CPU core meters and process scheduling controls.
+ */
+
+#kernel-os-modal .modal-content {
+    max-width: 1080px;
+    width: 94%;
+    background: rgba(10, 16, 30, 0.95);
+    border: 1px solid var(--cyan-neon);
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.25);
+}
+
+.kernel-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* CPU Core Gantt Cards */
+#kernel-cpu-cores {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.cpu-core-card {
+    background: rgba(18, 28, 51, 0.85);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.cpu-core-card.active {
+    border-color: var(--cyan-neon);
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.2);
+}
+
+.core-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.core-name {
+    color: var(--cyan-neon);
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.core-load {
+    color: var(--amber-neon);
+}
+
+.core-process-info {
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-height: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.idle-txt {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.core-progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.core-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00f0ff, #00ff88);
+    border-radius: 4px;
+    transition: width 0.15s linear;
+}
+
+.core-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ready-badge {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+/* Process Queue Table */
+.process-table-container {
+    max-height: 240px;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(13, 20, 36, 0.7);
+}
+
+.process-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.process-table th {
+    background: rgba(18, 28, 51, 0.9);
+    color: var(--cyan-neon);
+    padding: 10px 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+    position: sticky;
+    top: 0;
+}
+
+.process-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.row-deadlocked {
+    background: rgba(255, 0, 85, 0.15);
+}
+
+/* Badges */
+.badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.pri-badge-critical { background: rgba(255, 0, 85, 0.3); color: #ff3377; border: 1px solid #ff0055; }
+.pri-badge-high { background: rgba(255, 170, 0, 0.3); color: #ffbb33; border: 1px solid #ffaa00; }
+.pri-badge-medium { background: rgba(0, 240, 255, 0.2); color: #00f0ff; border: 1px solid #00f0ff; }
+.pri-badge-low { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; }
+
+.state-badge-ready { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+.state-badge-running { background: rgba(0, 240, 255, 0.3); color: #00f0ff; }
+.state-badge-blocked { background: rgba(255, 0, 85, 0.3); color: #ff0055; }
+.state-badge-waiting { background: rgba(255, 170, 0, 0.2); color: #ffaa00; }
+
+.tag-mutex {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #00ff88;
+    background: rgba(0, 255, 136, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    margin-left: 4px;
+}
+
+.tag-waiting {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #ffaa00;
+    background: rgba(255, 170, 0, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 170, 0, 0.3);
+    margin-left: 4px;
+}
+
+.btn-cycle-pri {
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.15s ease;
+}
+
+.btn-cycle-pri:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+}
+
+.mini-prog-bar {
+    width: 60px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.mini-prog-fill {
+    height: 100%;
+    background: var(--cyan-neon);
+    border-radius: 2px;
+}
+
+.prog-text {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.dispatch-btn-group {
+    display: inline-flex;
+    gap: 3px;
+    margin-right: 6px;
+}
+
+.running-core-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--cyan-neon);
+    margin-right: 6px;
+}
+
+/* Deadlock Status Box */
+.deadlock-alert-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 0, 85, 0.2);
+    border: 1px solid var(--red-neon);
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0 0 18px rgba(255, 0, 85, 0.3);
+}
+
+.deadlock-clear-box {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--green-neon);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Terminal Log View */
+.kernel-log-terminal {
+    background: #040811;
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    max-height: 120px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.log-entry { line-height: 1.4; }
+.log-time { color: var(--text-muted); margin-right: 8px; }
+.log-info { color: #e2e8f0; }
+.log-success { color: var(--green-neon); }
+.log-warning { color: var(--amber-neon); }
+.log-urgent { color: var(--red-neon); font-weight: 700; }
